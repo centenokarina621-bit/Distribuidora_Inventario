@@ -121,7 +121,7 @@ td.n,th.n{text-align:right}
 
 <section class="sec" id="hist"><div class="card tw"><table id="tH"></table></div></section>
 </main>
-<div id="lg" style="position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;z-index:80;padding:16px"><div class="card" style="max-width:360px;width:100%"><h2>🔐 Iniciar sesión</h2><div class="row" style="flex-direction:column;align-items:stretch"><label>Correo<input id="lgE" type="email" autocomplete="username"></label><label>Contraseña<input id="lgP" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()"></label><button class="b" onclick="login()">Entrar</button></div></div></div>
+<div id="lg" style="position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;z-index:80;padding:16px"><div class="card" style="max-width:360px;width:100%"><h2>🔐 Iniciar sesión</h2><div class="row" style="flex-direction:column;align-items:stretch"><label>Usuario<input id="lgU" type="text" autocomplete="username" onkeydown="if(event.key==='Enter')$('lgP').focus()"></label><label>Contraseña<input id="lgP" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()"></label><button class="b" onclick="login()">Entrar</button></div></div></div>
 <div id="msg"></div>
 <div id="mo" onclick="if(event.target===this)this.style.display='none'"><div class="box"><div id="tk" class="tk"></div><div class="row np" style="margin-top:14px"><button class="b" onclick="print()">🖨️ Imprimir</button><button class="b g" onclick="mo.style.display='none'">Cerrar</button></div></div></div>
 
@@ -213,8 +213,8 @@ $('pUm').innerHTML=UM.map(u=>`<option>${u}</option>`).join('');
 ['q','fCat','fSt','fIv','fAbc','fSo','fVw'].forEach(i=>$(i).oninput=rInv);$('qv').oninput=rPos;['tipo','dsc'].forEach(i=>$(i).oninput=()=>{rPos();rCart()});$('kProd').onchange=$('kTipo').onchange=rK;
 $('rate').onchange=e=>run(()=>API.setRate(+e.target.value||36.62));
 function all(){$('rate').value=S.rate;sel();rPanel();rInv();rPos();rCart();rBuy();rK();rH()}
-async function login(){try{await API.signIn($('lgE').value.trim(),$('lgP').value);await boot()}catch(e){toast('Credenciales inválidas','e')}}
-async function boot(){go();try{if(typeof API==='undefined'||!(await API.session())){$('lg').style.display='flex';return}$('lg').style.display='none';await refresh()}catch(e){console.error('Error durante la inicialización:',e);$('lg').style.display='flex'}}
+async function login(){try{await API.signIn($('lgU').value.trim(),$('lgP').value);await boot()}catch(e){toast('Credenciales inválidas','e')}}
+async function boot(){if(!(await API.session())){$('lg').style.display='flex';return}$('lg').style.display='none';await refresh();go()}
 boot();
 </script>
 </body>
