@@ -113,11 +113,9 @@ td.n,th.n{text-align:right}
       <label>Categoría<select id="fCat"></select></label>
       <label>Stock<select id="fSt"><option value="">Todos</option><option>OK</option><option>Bajo</option><option>Agotado</option></select></label>
       <label>Fiscal<select id="fIv"><option value="">Todos</option><option value="0">Gravado 15 %</option><option value="1">Exento</option></select></label>
-      <label>ABC<select id="fAbc"><option value="">Todas</option><option>A</option><option>B</option><option>C</option></select></label>
       <label>Ordenar por<select id="fSo"><option value="code">Código</option><option value="name">Nombre</option><option value="cat">Categoría</option><option value="abc">Clasificación ABC</option><option value="mg">Margen</option><option value="price">Precio</option><option value="stock">Stock</option></select></label>
       <label>Vista<select id="fVw"><option value="l">Lista</option><option value="c">Agrupada por categoría</option></select></label>
     </div>
-    <p class="note"><b>Clasificación ABC (Pareto):</b> se ordena el valor vendido (unidades × precio; si aún no hay ventas, el valor de inventario al costo). <b>A</b> = productos que acumulan el primer 80 %, <b>B</b> el siguiente 15 %, <b>C</b> el 5 % restante.</p>
     <div class="tw"><table id="tInv"></table></div>
   </div>
 </section>
@@ -208,8 +206,8 @@ function saveP(){
  run(async()=>{await API.saveProduct(id,d,old);clearP()},'Producto guardado')}
 function delP(id){if(!confirm('¿Eliminar este producto? Su kardex se conservará.'))return;run(()=>API.deleteProduct(id),'Producto eliminado')}
 function rInv(){
- const q=$('q').value.toLowerCase(),A=abc(),f={c:$('fCat').value,s:$('fSt').value,i:$('fIv').value,a:$('fAbc').value,o:$('fSo').value};
- let l=S.prods.filter(p=>(p.code+p.name+p.cat+p.sub).toLowerCase().includes(q)&&(!f.c||p.cat===f.c)&&(!f.s||st(p)===f.s)&&(f.i===''||p.ex==f.i)&&(!f.a||A[p.id]===f.a));
+ const q=$('q').value.toLowerCase(),A=abc(),f={c:$('fCat').value,s:$('fSt').value,i:$('fIv').value,o:$('fSo').value};
+ let l=S.prods.filter(p=>(p.code+p.name+p.cat+p.sub).toLowerCase().includes(q)&&(!f.c||p.cat===f.c)&&(!f.s||st(p)===f.s)&&(f.i===''||p.ex==f.i));
  const k={code:p=>p.code,name:p=>p.name,cat:p=>p.cat+p.sub,abc:p=>A[p.id],mg:p=>-mg(p),price:p=>-p.price,stock:p=>p.stock};
  l.sort((a,b)=>k[f.o](a)>k[f.o](b)?1:-1);
  const row=p=>`<tr><td>${esc(p.code)}</td><td>${esc(p.name)}</td><td>${esc(p.cat)} › ${esc(p.sub)}</td><td>${p.um}</td><td class="n">${C$(p.cost)}</td><td class="n">${C$(p.price)}</td><td class="n">${C$(p.pm)}</td><td class="n">${mg(p).toFixed(1)} % · ${C$(p.price-p.cost)}</td><td class="n"><span class="tag ${stc(st(p))}">${p.stock}</span></td><td><span class="tag">${A[p.id]}</span></td><td>${p.ex?'Exento':'15 %'}</td><td><button class="b g s" onclick="editP(${p.id})">Editar</button> <button class="b g s" onclick="dupP(${p.id})">Duplicar</button> <button class="b d s" onclick="delP(${p.id})">Eliminar</button></td></tr>`;
@@ -244,7 +242,7 @@ function sel(){const o=S.prods.map(p=>`<option value="${p.id}">${esc(p.code)} �
  const v=$('fCat').value;$('fCat').innerHTML='<option value="">Todas</option>'+[...new Set(S.prods.map(p=>p.cat))].sort().map(c=>`<option>${esc(c)}</option>`).join('');$('fCat').value=v;
  $('dc').innerHTML=[...new Set(S.prods.map(p=>p.cat))].map(c=>`<option value="${esc(c)}">`).join('')}
 $('pUm').innerHTML=UM.map(u=>`<option>${u}</option>`).join('');
-['q','fCat','fSt','fIv','fAbc','fSo','fVw'].forEach(i=>$(i).oninput=rInv);$('qv').oninput=rPos;['tipo','dsc'].forEach(i=>$(i).oninput=()=>{rPos();rCart()});$('kProd').onchange=$('kTipo').onchange=rK;
+['q','fCat','fSt','fIv','fSo','fVw'].forEach(i=>$(i).oninput=rInv);$('qv').oninput=rPos;['tipo','dsc'].forEach(i=>$(i).oninput=()=>{rPos();rCart()});$('kProd').onchange=$('kTipo').onchange=rK;
 $('rate').onchange=e=>run(()=>API.setRate(+e.target.value||36.62));
 function all(){$('rate').value=S.rate;sel();rPanel();rInv();rPos();rCart();rBuy();rK();rH()}
 async function login(){try{await API.signIn($('lgU').value.trim(),$('lgP').value);await boot()}catch(e){toast('Credenciales inválidas','e')}}
