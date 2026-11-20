@@ -55,10 +55,6 @@ td.n,th.n{text-align:right}
 <main>
 <section class="sec" id="panel">
   <div class="grid" id="kpis"></div>
-  <div class="two"><div class="card"><h2>⚠️ Alertas accionables</h2><div class="tw"><table id="tAl"></table></div></div>
-  <div class="card"><h2>🏆 Más vendidos</h2><div class="tw"><table id="tTop"></table></div></div></div>
-  <div class="card"><h2>📊 Resumen por categoría</h2><div class="tw"><table id="tCat"></table></div></div>
-  <div class="card"><h2>Datos y respaldo</h2><div class="row"><button class="b g" onclick="exp('p')">CSV inventario</button><button class="b g" onclick="exp('v')">CSV ventas</button><button class="b g" onclick="exp('k')">CSV kardex</button><button class="b g" onclick="refresh()">Recargar datos</button></div><p class="note">Los datos viven en Supabase (PostgreSQL). Exporta CSV para respaldos adicionales.</p></div>
 </section>
 
 <section class="sec" id="inv">
@@ -160,13 +156,7 @@ function rPanel(){
  const P=S.prods,vc=P.reduce((a,p)=>a+p.stock*p.cost,0),vv=P.reduce((a,p)=>a+p.stock*p.price,0),vt=S.sales.reduce((a,s)=>a+s.total,0),iv=S.sales.reduce((a,s)=>a+s.iva,0),ut=S.sales.reduce((a,s)=>a+s.utilidad,0);
  const bj=P.filter(p=>st(p)==='Bajo').length,ag=P.filter(p=>st(p)==='Agotado').length,mp=P.length?P.reduce((a,p)=>a+mg(p),0)/P.length:0;
  $('kpis').innerHTML=[['Inventario al costo',C$(vc)],['Valor potencial de venta',C$(vv)],['Ventas totales',C$(vt)],['IVA 15 % facturado',C$(iv)],['Utilidad bruta',C$(ut)],['Margen promedio',mp.toFixed(1)+' %'],['Stock bajo / agotado',bj+' / '+ag],['Inventario en US$','$ '+(vc/S.rate).toLocaleString('en-US',{maximumFractionDigits:0})]].map(k=>`<div class="card kpi" style="margin:0"><span>${k[0]}</span><b>${k[1]}</b></div>`).join('');
- $('tAl').innerHTML=tbl(['Producto','>Stock','>Mín.','Estado',''],P.filter(p=>p.stock<=p.min).map(p=>`<tr><td>${esc(p.name)}</td><td class="n">${p.stock}</td><td class="n">${p.min}</td><td><span class="tag ${stc(st(p))}">${st(p)}</span></td><td><button class="b s" onclick="reponer(${p.id})">Reponer</button></td></tr>`),5);
- const c={};S.sales.forEach(s=>s.items.forEach(i=>c[i.pid]=(c[i.pid]||0)+i.qty));
- $('tTop').innerHTML=tbl(['Producto','>Uds.'],Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([id,q])=>`<tr><td>${prod(id)?esc(prod(id).name):'—'}</td><td class="n">${q}</td></tr>`));
- const g={};P.forEach(p=>{const o=g[p.cat]=g[p.cat]||{n:0,u:0,c:0,v:0};o.n++;o.u+=p.stock;o.c+=p.stock*p.cost;o.v+=p.stock*p.price});
- $('tCat').innerHTML=tbl(['Categoría','>Productos','>Unidades','>Valor al costo','>Valor de venta','>% inventario'],Object.entries(g).sort((a,b)=>b[1].c-a[1].c).map(([k,o])=>`<tr><td>${esc(k)}</td><td class="n">${o.n}</td><td class="n">${o.u}</td><td class="n">${C$(o.c)}</td><td class="n">${C$(o.v)}</td><td class="n">${vc?(o.c/vc*100).toFixed(1):0} %</td></tr>`));
 }
-function reponer(id){location.hash='compra';setTimeout(()=>{$('cProd').value=id;$('cQty').focus()},50)}
 
 let eid=null;
 function clearP(){eid=null;['pCode','pName','pCat','pSub','pCost','pPrice','pPm','pStock','pMin'].forEach(i=>{$(i).value='';$(i).classList.remove('bad')});$('pEx').value='0';$('fT').textContent='Nuevo producto'}
@@ -214,10 +204,6 @@ function rBuy(){$('tBuy').innerHTML=tbl(['Fecha','Producto','Proveedor','Documen
 function rK(){const ty=[...new Set(S.movs.map(m=>m.type))],cur=$('kTipo').value;$('kTipo').innerHTML='<option value="">Todos</option>'+ty.map(t=>`<option>${t}</option>`).join('');$('kTipo').value=cur;
  $('tK').innerHTML=tbl(['Fecha','Movimiento','Referencia','>Entrada','>Salida','>Saldo'],S.movs.filter(m=>m.pid==$('kProd').value&&(!$('kTipo').value||m.type===$('kTipo').value)).map(m=>`<tr><td>${m.d}</td><td>${m.type}</td><td>${esc(m.ref)}</td><td class="n">${m.qty>0?m.qty:''}</td><td class="n">${m.qty<0?-m.qty:''}</td><td class="n">${m.bal}</td></tr>`))}
 function rH(){$('tH').innerHTML=tbl(['N.º','Fecha','Cliente','Precio','Pago','>Subtotal','>IVA','>Total',''],[...S.sales].reverse().map(s=>`<tr><td>${s.num}</td><td>${s.d}</td><td>${esc(s.cli)}</td><td>${s.tipo}</td><td>${s.pay}</td><td class="n">${C$(s.sub-s.ds)}</td><td class="n">${C$(s.iva)}</td><td class="n"><b>${C$(s.total)}</b></td><td><button class="b g s" onclick="ticket('${s.num}')">Ver / imprimir</button></td></tr>`))}
-function exp(t){const R={p:[['Codigo','Producto','Categoria','Linea','Unidad','Costo','Detalle','Mayorista','Stock','Minimo','IVA']].concat(S.prods.map(p=>[p.code,p.name,p.cat,p.sub,p.um,p.cost,p.price,p.pm,p.stock,p.min,p.ex?'Exento':'15%'])),
- v:[['Factura','Fecha','Cliente','Precio','Pago','Subtotal','Descuento','IVA','Total']].concat(S.sales.map(s=>[s.num,s.d,s.cli,s.tipo,s.pay,s.sub.toFixed(2),s.ds.toFixed(2),s.iva.toFixed(2),s.total.toFixed(2)])),
- k:[['Fecha','Producto','Movimiento','Referencia','Cantidad','Saldo']].concat(S.movs.map(m=>[m.d,prod(m.pid)?prod(m.pid).name:m.pid,m.type,m.ref,m.qty,m.bal]))}[t];
- const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent('\ufeff'+R.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n'));a.download={p:'inventario',v:'ventas',k:'kardex'}[t]+'.csv';a.click()}
 function sel(){const o=S.prods.map(p=>`<option value="${p.id}">${esc(p.code)} – ${esc(p.name)}</option>`).join('');['cProd','aProd','kProd'].forEach(i=>{const v=$(i).value;$(i).innerHTML=o;if(v&&prod(v))$(i).value=v});
  const v=$('fCat').value;$('fCat').innerHTML='<option value="">Todas</option>'+[...new Set(S.prods.map(p=>p.cat))].sort().map(c=>`<option>${esc(c)}</option>`).join('');$('fCat').value=v;
  $('dc').innerHTML=[...new Set(S.prods.map(p=>p.cat))].map(c=>`<option value="${esc(c)}">`).join('')}
