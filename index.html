@@ -126,8 +126,8 @@ td.n,th.n{text-align:right}
 <div id="mo" onclick="if(event.target===this)this.style.display='none'"><div class="box"><div id="tk" class="tk"></div><div class="row np" style="margin-top:14px"><button class="b" onclick="print()">🖨️ Imprimir</button><button class="b g" onclick="mo.style.display='none'">Cerrar</button></div></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script src="config.js"></script>
-<script src="api.js"></script>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
 <script>
 const KEY='dist_ni_v2',IVA=.15,UM=['Unidad','Libra','Litro','Caja','Paquete','Botella','Lata','Saco','Quintal'];
 const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
