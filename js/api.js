@@ -9,7 +9,10 @@
 
   window.API = {
     async session() { return (await sb.auth.getSession()).data.session; },
-    async signIn(email, password) { ok(await sb.auth.signInWithPassword({ email, password })); },
+    async signIn(user, password) {
+      const email = user.includes('@') ? user : `${user}@distribuidora.local`;
+      ok(await sb.auth.signInWithPassword({ email, password }));
+    },
     async signOut() { await sb.auth.signOut(); },
 
     async load() {
