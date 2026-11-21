@@ -1,5 +1,5 @@
 /* Service Worker — Distribuidora Bora PWA */
-const CACHE = 'bora-pwa-v1';
+const CACHE = 'bora-pwa-v2';
 const PRECACHE = [
   './',
   './index.html',
