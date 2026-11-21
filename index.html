@@ -10,17 +10,17 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
 :root{
-  --bg:#F8F7F4;
+  --bg:#F8F7FA;
   --cd:#FFFFFF;
-  --tx:#18181B;
-  --mu:#71717A;
-  --bd:#E4E4E7;
-  --pr:#18181B;
-  --p2:#F4F4F5;
+  --tx:#2B2435;
+  --mu:#6E637A;
+  --bd:#D0C9D7;
+  --pr:#4A3B5C;
+  --p2:#F1EDF5;
   --ok:#15803D;
   --wa:#B45309;
   --er:#B91C1C;
-  --sh:0 1px 3px rgba(0,0,0,.04),0 1px 2px rgba(0,0,0,.02);
+  --sh:0 1px 3px rgba(74, 59, 92, 0.06);
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px)
@@ -41,7 +41,7 @@ header button{background:#FFFFFF!important;color:#4A3B5C!important;border:1px so
 header button:hover{background:#F0EEF4!important;border-color:#8E7F9E!important;color:#352943!important}
 nav{display:flex;gap:4px;overflow-x:auto;background:var(--cd);border-bottom:1px solid var(--bd);padding:6px 14px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;box-shadow:var(--sh)}
 nav button{background:none;border:0;color:var(--mu);padding:8px 14px;border-radius:6px;cursor:pointer;font:inherit;font-weight:500;white-space:nowrap;transition:all .15s}
-nav button:hover{color:var(--tx);background:var(--p2)}
+nav button:hover{color:#4A3B5C;background:var(--p2)}
 nav button.on{background:var(--pr);color:#FFFFFF;font-weight:600}
 main{max-width:1200px;margin:0 auto;padding:16px}
 .sec{display:none}.sec.on{display:block}
@@ -53,19 +53,21 @@ h2{font-size:15px;margin:0 0 12px;font-weight:600;color:var(--tx)}
 .row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;align-items:end}
 label{display:flex;flex-direction:column;font-size:12px;color:var(--mu);gap:4px;font-weight:500}
 input,select{font:inherit;padding:7px 10px;border:1px solid var(--bd);border-radius:6px;background:#FFFFFF;color:var(--tx);min-width:0;transition:border-color .15s}
-input:focus,select:focus{outline:none;border-color:var(--tx)}
+input:focus,select:focus{outline:none;border-color:#8E7F9E}
 .bad{border-color:var(--er)!important;background:color-mix(in srgb,var(--er) 6%,#fff)}
 button.b{font:inherit;padding:8px 14px;border:0;border-radius:6px;background:var(--pr);color:#fff;cursor:pointer;font-weight:500;transition:background-color .15s}
-button.b:hover{background:#27272A}
-button.g{background:var(--p2);color:var(--tx);border:1px solid var(--bd)}
-button.g:hover{background:#E4E4E7}
+button.b:hover{background:#382C47}
+#lg button.b{background:#4A3B5C;color:#fff}
+#lg button.b:hover{background:#352943}
+button.g{background:var(--p2);color:#4A3B5C;border:1px solid #8E7F9E}
+button.g:hover{background:#E6E1EC;color:#382C47}
 button.d{background:var(--er);color:#fff}
 button.d:hover{background:#991B1B}
 button.s{padding:4px 9px;font-size:12.5px}
 button:disabled{opacity:.4;cursor:not-allowed}
 .tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13.5px}
-th,td{padding:8px 12px;border-bottom:1px solid var(--bd);text-align:left;white-space:nowrap}
-th{color:var(--mu);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;background:var(--p2)}
+th,td{padding:8px 12px;border-bottom:1px solid #E6E1EC;text-align:left;white-space:nowrap}
+th{color:#4A3B5C;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;background:#F1EDF5}
 td.n,th.n{text-align:right}
 .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11.5px;font-weight:600;background:var(--p2);color:var(--tx);border:1px solid var(--bd)}
 .tag.o{background:color-mix(in srgb,var(--ok) 12%,transparent);color:var(--ok);border-color:color-mix(in srgb,var(--ok) 25%,transparent)}
@@ -75,7 +77,7 @@ td.n,th.n{text-align:right}
 .tot div{display:flex;justify-content:space-between;padding:3px 0}.tot .t{font-size:20px;font-weight:700;border-top:1px solid var(--bd);margin-top:4px;padding-top:8px}
 .note{color:var(--mu);font-size:12px;line-height:1.4}.empty{color:var(--mu);text-align:center;padding:18px}
 #msg{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));padding:10px 18px;border-radius:6px;display:none;z-index:99;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.15);max-width:90vw;font-weight:500}
-#mo{position:fixed;inset:0;background:rgba(24,24,27,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+#mo{position:fixed;inset:0;background:rgba(43,36,53,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
 #mo .box{background:var(--cd);border-radius:8px;padding:20px;max-width:420px;width:100%;max-height:90vh;overflow:auto;border:1px solid var(--bd);box-shadow:0 10px 25px rgba(0,0,0,.1)}
 .tk{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}.tk hr{border:0;border-top:1px dashed var(--mu)}.tk div{display:flex;justify-content:space-between;gap:10px}
 @media print{body>*:not(#mo){display:none!important}#mo{position:static;background:none;display:block!important;padding:0}#mo .box{box-shadow:none;max-width:none;color:#000;background:#fff}.np{display:none!important}}
@@ -172,7 +174,7 @@ td.n,th.n{text-align:right}
 
 <section class="sec" id="hist"><div class="card tw"><table id="tH"></table></div></section>
 </main>
-<div id="lg" style="position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;z-index:80;padding:16px"><div class="card" style="max-width:360px;width:100%"><h2>Iniciar sesión</h2><div class="row" style="flex-direction:column;align-items:stretch"><label>Usuario<input id="lgU" type="text" autocomplete="username" onkeydown="if(event.key==='Enter')$('lgP').focus()"></label><label>Contraseña<input id="lgP" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()"></label><button class="b" onclick="login()">Entrar</button></div></div></div>
+<div id="lg" style="position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;z-index:80;padding:16px"><div class="card" style="max-width:360px;width:100%"><div class="brand" style="justify-content:center;margin-bottom:20px"><svg class="brand-logo" width="34" height="34" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18 4L31 11.5V24.5L18 32L5 24.5V11.5L18 4Z" stroke="#4A3B5C" stroke-width="1.75" stroke-linejoin="round"/><path d="M18 18L31 11.5" stroke="#4A3B5C" stroke-width="1.75" stroke-linejoin="round"/><path d="M18 18L5 11.5" stroke="#4A3B5C" stroke-width="1.75" stroke-linejoin="round"/><path d="M18 18V32" stroke="#4A3B5C" stroke-width="1.75" stroke-linejoin="round"/><path d="M13 14.5L18 17.5L23 14.5" stroke="#8E7F9E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 22L13 24.5" stroke="#8E7F9E" stroke-width="1.5" stroke-linecap="round"/></svg><div class="brand-text"><span class="brand-sub">DISTRIBUIDORA</span><span class="brand-name">BORA</span></div></div><div class="row" style="flex-direction:column;align-items:stretch"><label>Usuario<input id="lgU" type="text" autocomplete="username" onkeydown="if(event.key==='Enter')$('lgP').focus()"></label><label>Contraseña<input id="lgP" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()"></label><button class="b" onclick="login()">Entrar</button></div></div></div>
 <div id="msg"></div>
 <div id="mo" onclick="if(event.target===this)this.style.display='none'"><div class="box"><div id="tk" class="tk"></div><div class="row np" style="margin-top:14px"><button class="b" onclick="print()">Imprimir</button><button class="b g" onclick="mo.style.display='none'">Cerrar</button></div></div></div>
 
