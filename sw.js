@@ -1,11 +1,13 @@
 /* Service Worker — Distribuidora Bora PWA */
-const CACHE = 'bora-pwa-v2';
+const CACHE = 'bora-pwa-v3';
 const PRECACHE = [
   './',
   './index.html',
   './manifest.json',
   './js/config.js',
-  './js/api.js'
+  './js/api.js',
+  './icons/icon-192.png',
+  './icons/icon-512.png'
 ];
 
 /* ── Install: pre-cachear archivos estáticos ── */
